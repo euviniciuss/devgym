@@ -1,25 +1,27 @@
 {
-  "name": "devgym",
-  "version": "1.0.0",
-  "main": "app.ts",
-  "scripts": {
-    "start:dev": "tsx watch src/server.ts",
-    "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@types/node": "^25.5.0",
-    "tsup": "^8.5.1",
-    "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
-  },
-  "dependencies": {
-    "dotenv": "^17.3.1",
-    "fastify": "^5.8.4",
-    "zod": "^4.3.6"
-  }
+	"name": "devgym",
+	"version": "1.0.0",
+	"main": "app.ts",
+	"scripts": {
+		"dev": "tsx watch --env-files=.env src/server.ts",
+		"start": "node dist/server.js",
+		"build": "tsup src --out-dir build",
+		"format": "biome format --write"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@biomejs/biome": "2.4.10",
+		"@types/node": "^25.5.0",
+		"tsup": "^8.5.1",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.2"
+	},
+	"dependencies": {
+		"dotenv": "^17.3.1",
+		"fastify": "^5.8.4",
+		"zod": "^4.3.6"
+	}
 }

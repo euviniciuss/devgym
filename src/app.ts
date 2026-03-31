@@ -1,5 +1,5 @@
-import Fastify from 'fastify';
+import Fastify from 'fastify'
 
 export const app = Fastify({
-  logger: false,
+	logger: false,
 })
