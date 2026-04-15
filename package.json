@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "app.ts",
 	"scripts": {
-		"dev": "tsx watch --env-files=.env src/server.ts",
+		"dev": "tsx watch src/server.ts",
 		"start": "node dist/server.js",
 		"build": "tsup src --out-dir build",
 		"format": "biome format --write"
