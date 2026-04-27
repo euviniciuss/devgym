@@ -5,6 +5,14 @@ import type { IUsersRepository } from '../types/users-repository'
 export class InMemorUsersRepository implements IUsersRepository {
 	public registers: User[] = []
 
+	async findById(id: string) {
+		const user = this.registers.find((user) => user.id === id)
+
+		if (!user) return null
+
+		return user
+	}
+
 	async findByEmail(email: string) {
 		const user = this.registers.find((user) => user.email === email)
 
