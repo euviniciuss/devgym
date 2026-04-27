@@ -36,7 +36,7 @@ describe('Authenticate Use Case', () => {
 			password: '123456',
 		}
 
-		expect(() => sut.execute(mockUser)).rejects.toBeInstanceOf(
+		await expect(() => sut.execute(mockUser)).rejects.toBeInstanceOf(
 			InvalidCredentialsError,
 		)
 	})
@@ -50,7 +50,7 @@ describe('Authenticate Use Case', () => {
 
 		await usersRepository.create(mockUser)
 
-		expect(() =>
+		await expect(() =>
 			sut.execute({ email: mockUser.email, password: '1242142' }),
 		).rejects.toBeInstanceOf(InvalidCredentialsError)
 	})
