@@ -1,17 +1,7 @@
 import { hash } from 'bcryptjs'
 import type { IUsersRepository } from '@/repositories/types/users-repository'
-import type { User } from '../../generated/prisma/browser'
-import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-
-interface IRegisterUseCase {
-	name: string
-	email: string
-	password: string
-}
-
-interface IRegisterUseCaseResponse {
-	user: User
-}
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
+import type { IRegisterUseCase, IRegisterUseCaseResponse } from './types'
 
 export class RegisterUseCase {
 	constructor(private usersRepository: IUsersRepository) {}

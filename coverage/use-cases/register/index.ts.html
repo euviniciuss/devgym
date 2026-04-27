@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for repositories/in-memory/in-memory-users-repository.ts</title>
+    <title>Code coverage report for use-cases/register/index.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">repositories/in-memory</a> in-memory-users-repository.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">use-cases/register</a> index.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -39,7 +39,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -92,62 +92,65 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { User } from '../../../generated/prisma/browser'
-import type { UserCreateInput } from '../../../generated/prisma/models'
-import type { IUsersRepository } from '../types/users-repository'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { hash } from 'bcryptjs'
+import type { IUsersRepository } from '@/repositories/types/users-repository'
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
+import type { IRegisterUseCase, IRegisterUseCaseResponse } from './types'
 &nbsp;
-export class InMemorUsersRepository implements IUsersRepository {
-	public registers: User[] = []
+export class RegisterUseCase {
+	constructor(private usersRepository: IUsersRepository) {}
 &nbsp;
-	async findByEmail(email: string) {
-		const user = this.registers.find((user) =&gt; user.email === email)
+	async execute({
+		name,
+		email,
+		password,
+	}: IRegisterUseCase): Promise&lt;IRegisterUseCaseResponse&gt; {
+		const password_hash = await hash(password, 6)
 &nbsp;
-		if (!user) return null
+		const userWithSameEmail = await this.usersRepository.findByEmail(email)
 &nbsp;
-		return user
-	}
+		if (userWithSameEmail) {
+			throw new UserAlreadyExistsError()
+		}
 &nbsp;
-	async create(data: UserCreateInput) {
-		const user = {
-			id: 'mock-id-1',
-			name: data.name,
-			email: data.email,
-			password_hash: data.password_hash,
-			created_at: new Date(),
-		} as User
+		const user = await this.usersRepository.create({
+			name,
+			email,
+			password_hash,
+		})
 &nbsp;
-		this.registers.push(user)
-&nbsp;
-		return user
+		return { user }
 	}
 }
 &nbsp;</pre></td></tr></table></pre>
