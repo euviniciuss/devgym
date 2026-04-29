@@ -6,6 +6,18 @@ import type { ICheckInsRespository } from '../types/check-ins-repository'
 export class InMemorCheckInsRepository implements ICheckInsRespository {
 	public registers: CheckIn[] = []
 
+	async findByUserIdOnDate(userId: string, date: Date) {
+		const checkInOnSameDate = this.registers.find(
+			(checkIn) =>
+				checkIn.user_id === userId &&
+				date.toDateString() === checkIn.created_at.toDateString(),
+		)
+
+		if (!checkInOnSameDate) return null
+
+		return checkInOnSameDate
+	}
+
 	async create(data: CheckInUncheckedCreateInput) {
 		const checkIn = {
 			id: randomUUID(),
