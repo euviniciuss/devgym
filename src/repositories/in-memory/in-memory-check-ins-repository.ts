@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import dayjs from 'dayjs'
 import type { CheckIn } from '../../../generated/prisma/browser'
 import type { CheckInUncheckedCreateInput } from '../../../generated/prisma/models'
 import type { ICheckInsRespository } from '../types/check-ins-repository'
@@ -7,11 +8,17 @@ export class InMemorCheckInsRepository implements ICheckInsRespository {
 	public registers: CheckIn[] = []
 
 	async findByUserIdOnDate(userId: string, date: Date) {
-		const checkInOnSameDate = this.registers.find(
-			(checkIn) =>
-				checkIn.user_id === userId &&
-				date.toDateString() === checkIn.created_at.toDateString(),
-		)
+		const startOfTheDay = dayjs(date).startOf('date')
+		const endOfTheDay = dayjs(date).endOf('date')
+
+		const checkInOnSameDate = this.registers.find((checkIn) => {
+			const checkInDate = dayjs(checkIn.created_at)
+
+			const isOnSameDate =
+				checkInDate.isAfter(startOfTheDay) && checkInDate.isBefore(endOfTheDay)
+
+			return checkIn.user_id === userId && isOnSameDate
+		})
 
 		if (!checkInOnSameDate) return null
 
