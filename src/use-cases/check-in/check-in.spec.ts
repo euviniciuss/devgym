@@ -1,14 +1,26 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { InMemorCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
+import { InMemorGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { CheckInUseCase } from '.'
 
 let checkInsRepository: InMemorCheckInsRepository
+let gymsRepository: InMemorGymsRepository
 let sut: CheckInUseCase
 
 describe('Check-in Use Case', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		checkInsRepository = new InMemorCheckInsRepository()
-		sut = new CheckInUseCase(checkInsRepository)
+		gymsRepository = new InMemorGymsRepository()
+		sut = new CheckInUseCase(checkInsRepository, gymsRepository)
+
+		await gymsRepository.create({
+			id: 'gym-01',
+			title: 'JavaScript Gym',
+			description: '',
+			phone: '',
+			latitude: -23.6821608,
+			longitude: -46.5957695,
+		})
 
 		vi.useFakeTimers()
 	})
