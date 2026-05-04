@@ -25,6 +25,10 @@ export class InMemorCheckInsRepository implements ICheckInsRespository {
 		return checkInOnSameDate
 	}
 
+	async findManyUserByUserId(userId: string) {
+		return this.registers.filter((checkIn) => checkIn.user_id === userId)
+	}
+
 	async create(data: CheckInUncheckedCreateInput) {
 		const checkIn = {
 			id: randomUUID(),
