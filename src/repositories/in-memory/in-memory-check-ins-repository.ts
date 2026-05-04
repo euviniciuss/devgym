@@ -25,8 +25,10 @@ export class InMemorCheckInsRepository implements ICheckInsRespository {
 		return checkInOnSameDate
 	}
 
-	async findManyUserByUserId(userId: string) {
-		return this.registers.filter((checkIn) => checkIn.user_id === userId)
+	async findManyUserByUserId(userId: string, page: number) {
+		return this.registers
+			.filter((checkIn) => checkIn.user_id === userId)
+			.slice((page - 1) * 20, page * 20)
 	}
 
 	async create(data: CheckInUncheckedCreateInput) {

@@ -9,8 +9,12 @@ export class GetUserCheckInsHistoryUseCase {
 
 	async execute({
 		userId,
+		page = 1,
 	}: IGetUserCheckInsHistoryRequest): Promise<IGetUserCheckInsHistoryResponse> {
-		const checkIns = await this.checkInsRepository.findManyUserByUserId(userId)
+		const checkIns = await this.checkInsRepository.findManyUserByUserId(
+			userId,
+			page,
+		)
 
 		return { checkIns }
 	}
