@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 import type { Gym } from '../../../generated/prisma/browser'
 import type { GymUncheckedCreateInput } from '../../../generated/prisma/models'
 

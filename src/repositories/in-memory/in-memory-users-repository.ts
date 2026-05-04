@@ -3,7 +3,7 @@ import type { User } from '../../../generated/prisma/browser'
 import type { UserCreateInput } from '../../../generated/prisma/models'
 import type { IUsersRepository } from '../types/users-repository'
 
-export class InMemorUsersRepository implements IUsersRepository {
+export class InMemoryUsersRepository implements IUsersRepository {
 	public registers: User[] = []
 
 	async findById(id: string) {

@@ -4,7 +4,7 @@ import type { CheckIn } from '../../../generated/prisma/browser'
 import type { CheckInUncheckedCreateInput } from '../../../generated/prisma/models'
 import type { ICheckInsRespository } from '../types/check-ins-repository'
 
-export class InMemorCheckInsRepository implements ICheckInsRespository {
+export class InMemoryCheckInsRepository implements ICheckInsRespository {
 	public registers: CheckIn[] = []
 
 	async findByUserIdOnDate(userId: string, date: Date) {
@@ -29,6 +29,10 @@ export class InMemorCheckInsRepository implements ICheckInsRespository {
 		return this.registers
 			.filter((checkIn) => checkIn.user_id === userId)
 			.slice((page - 1) * 20, page * 20)
+	}
+
+	async countByUserId(userId: string) {
+		return this.registers.filter((checkIn) => checkIn.user_id === userId).length
 	}
 
 	async create(data: CheckInUncheckedCreateInput) {

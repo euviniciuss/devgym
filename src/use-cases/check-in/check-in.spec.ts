@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { InMemorCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
+import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { MaxDistanceError, MaxNumberOfCheckInsError } from '../errors'
 import { CheckInUseCase } from '.'
 
-let checkInsRepository: InMemorCheckInsRepository
+let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
@@ -17,7 +17,7 @@ const mockCheckIn = {
 
 describe('Check-in Use Case', () => {
 	beforeEach(async () => {
-		checkInsRepository = new InMemorCheckInsRepository()
+		checkInsRepository = new InMemoryCheckInsRepository()
 		gymsRepository = new InMemoryGymsRepository()
 		sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
