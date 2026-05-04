@@ -15,6 +15,12 @@ export class InMemoryGymsRepository implements IGymsRepository {
 		return gym
 	}
 
+	async searchMany(query: string, page: number) {
+		return this.registers
+			.filter((gym) => gym.title.toLowerCase().includes(query.toLowerCase()))
+			.slice((page - 1) * 20, page * 20)
+	}
+
 	async create(data: GymUncheckedCreateInput) {
 		const gym = {
 			id: data.id ?? randomUUID(),
