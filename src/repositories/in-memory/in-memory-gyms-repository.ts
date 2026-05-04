@@ -1,9 +1,10 @@
+import { randomUUID } from 'crypto'
 import type { Gym } from '../../../generated/prisma/browser'
 import type { GymUncheckedCreateInput } from '../../../generated/prisma/models'
 
 import type { IGymsRepository } from '../types/gyms-repository'
 
-export class InMemorGymsRepository implements IGymsRepository {
+export class InMemoryGymsRepository implements IGymsRepository {
 	public registers: Gym[] = []
 
 	async findById(id: string) {
@@ -16,7 +17,7 @@ export class InMemorGymsRepository implements IGymsRepository {
 
 	async create(data: GymUncheckedCreateInput) {
 		const gym = {
-			id: data.id,
+			id: data.id ?? randomUUID(),
 			title: data.title,
 			description: data.description,
 			phone: data.phone,

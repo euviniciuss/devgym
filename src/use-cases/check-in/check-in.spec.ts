@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { InMemorCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
-import { InMemorGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { MaxDistanceError, MaxNumberOfCheckInsError } from '../errors'
 import { CheckInUseCase } from '.'
 
 let checkInsRepository: InMemorCheckInsRepository
-let gymsRepository: InMemorGymsRepository
+let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 const mockCheckIn = {
@@ -17,7 +18,7 @@ const mockCheckIn = {
 describe('Check-in Use Case', () => {
 	beforeEach(async () => {
 		checkInsRepository = new InMemorCheckInsRepository()
-		gymsRepository = new InMemorGymsRepository()
+		gymsRepository = new InMemoryGymsRepository()
 		sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
 		await gymsRepository.create({
@@ -47,7 +48,9 @@ describe('Check-in Use Case', () => {
 
 		await sut.execute(mockCheckIn)
 
-		await expect(sut.execute(mockCheckIn)).rejects.toBeInstanceOf(Error)
+		await expect(sut.execute(mockCheckIn)).rejects.toBeInstanceOf(
+			MaxNumberOfCheckInsError,
+		)
 	})
 
 	it('should be able to check in twice but in different days', async () => {
@@ -79,6 +82,8 @@ describe('Check-in Use Case', () => {
 			userLongitude: -44.2196983,
 		}
 
-		await expect(sut.execute(mockCheckIn)).rejects.toBeInstanceOf(Error)
+		await expect(sut.execute(mockCheckIn)).rejects.toBeInstanceOf(
+			MaxDistanceError,
+		)
 	})
 })
