@@ -22,8 +22,6 @@ describe('Create Gym Use Case', () => {
 
 		const { gym } = await sut.execute(mockGym)
 
-		console.log({ gym })
-
 		expect(gym.id).toEqual(expect.any(String))
 	})
 })
