@@ -1,16 +1,16 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { makeCreateGymUseCaseUseCase } from '@/factories'
+import { makeCreateGymUseCase } from '@/factories'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
 	const createBodySchema = z.object({
 		title: z.string(),
 		description: z.string().nullable(),
 		phone: z.string().nullable(),
-		latitude: z.number().refine((value) => {
+		latitude: z.coerce.number().refine((value) => {
 			return Math.abs(value) <= 90
 		}),
-		longitude: z.number().refine((value) => {
+		longitude: z.coerce.number().refine((value) => {
 			return Math.abs(value) <= 180
 		}),
 	})
@@ -18,7 +18,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 	const { title, description, phone, latitude, longitude } =
 		createBodySchema.parse(request.body)
 
-	const createGymUseCase = makeCreateGymUseCaseUseCase()
+	const createGymUseCase = makeCreateGymUseCase()
 
 	await createGymUseCase.execute({
 		title,
