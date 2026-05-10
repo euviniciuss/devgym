@@ -28,6 +28,8 @@ jobs:
       - run: npm ci
 
       - run: npx prisma generate
+        env:
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/apisolid?schema=public"
 
       - run: npm run test:e2e
         env:
