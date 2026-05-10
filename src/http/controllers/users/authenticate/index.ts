@@ -20,7 +20,9 @@ export async function authenticate(
 		const { user } = await authenticateUseCase.execute({ email, password })
 
 		const token = await reply.jwtSign(
-			{},
+			{
+				role: user.role,
+			},
 			{
 				sign: {
 					sub: user.id,
@@ -29,7 +31,9 @@ export async function authenticate(
 		)
 
 		const refreshToken = await reply.jwtSign(
-			{},
+			{
+				role: user.role, //TODO: Remover esse role do payload do refresh token, e coletar a informação de role no refresh com o use-case de user.
+			},
 			{
 				sign: {
 					sub: user.id,
