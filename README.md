@@ -37,7 +37,7 @@ A API permite que usuários se cadastrem, encontrem academias próximas, realize
 |--------|------|-------------|-------|-----------|
 | `POST` | `/users` | ❌ | - | Cadastrar novo usuário |
 | `POST` | `/sessions` | ❌ | - | Autenticar (login) |
-| `PATCH` | `/token/refresh` | ❌* | - | Atualizar token de acesso |
+| `PATCH` | `/token/refresh` | ❌ | - | Atualizar token de acesso |
 | `GET` | `/me` | ✅ | Qualquer | Obter perfil do usuário logado |
 | `GET` | `/gyms/search?q=&page=` | ✅ | Qualquer | Buscar academias por nome |
 | `GET` | `/gyms/nearby?latitude=&longitude=` | ✅ | Qualquer | Listar academias próximas (10km) |
@@ -58,7 +58,7 @@ src/
 ├── env/                            # Validação de variáveis de ambiente (Zod)
 ├── lib/                            # Singleton do Prisma client
 ├── utils/                          # Utilitários (Haversine)
-├── middlewares/                     # Verificação JWT e RBAC
+├── middlewares/                    # Verificação JWT e RBAC
 ├── http/controllers/               # Rotas e handlers HTTP
 │   ├── users/                      # Cadastro, autenticação, perfil, refresh
 │   ├── gyms/                       # CRUD, busca, academias próximas
